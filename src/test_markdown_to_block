@@ -1,0 +1,75 @@
+import unittest
+from markdown_to_blocks import markdown_to_blocks
+
+class TestMarkdownToBlocks(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_with_empty_lines(self):
+        md = """
+This is a paragraph with empty lines before and after
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a paragraph with empty lines before and after"]
+                         
+    def test_markdown_to_blocks_with_only_empty_lines(self):
+        md = """
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [])
+
+    def test_markdown_to_blocks_with_no_paragraphs(self):
+        md = "This is a single line of text with no paragraphs."
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a single line of text with no paragraphs."])
+
+    def test_markdown_to_blocks_with_multiple_empty_lines(self):
+        md = """
+This is a paragraph with multiple empty lines before and after
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a paragraph with multiple empty lines before and after"])
+
+    def test_markdown_to_blocks_with_leading_and_trailing_whitespace(self):
+        md = """
+This is a paragraph with leading and trailing whitespace
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a paragraph with leading and trailing whitespace"])
+
+    def test_markdown_to_blocks_with_multiple_paragraphs(self):
+        md = """
+This is the first paragraph.
+This is the second paragraph.
+This is the third paragraph.
+This is the fourth paragraph.
+This is the fifth paragraph.
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is the first paragraph.",
+                "This is the second paragraph.",
+                "This is the third paragraph.",
+                "This is the fourth paragraph.",
+                "This is the fifth paragraph.",
+            ],
+        )
